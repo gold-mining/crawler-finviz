@@ -1,0 +1,17 @@
+get stock list:
+	mode=list-stock start=1 stop=115 output=/Users/james/big-qc/crawler_result/finviz/stock-list/2017-12-06
+
+	java -Xms4096M -Xmx8192M -cp ./target/crawler-finviz-0.0.1-SNAPSHOT-jar-with-dependencies.jar com.james.runner.FinvizRunner mode=list-stock start=1 stop=115 output=/Users/james/big-qc/crawler_result/finviz/stock-list/2017-12-06
+
+
+get stock detail single-thread:
+	mode=all-stock-detail stock-list=/Users/james/big-qc/crawler_result/finviz/stock-list/2017-12-06/result.txt date=2017-12-06 output=/Users/james/big-qc/crawler_result/finviz/stock-detail
+
+	java -Xms4096M -Xmx8192M -cp ./target/crawler-finviz-0.0.1-SNAPSHOT-jar-with-dependencies.jar com.james.runner.FinvizRunner mode=all-stock-detail stock-list=/Users/james/big-qc/crawler_result/finviz/stock-list/2017-12-06/result.txt date=2017-12-06 output=/Users/james/big-qc/crawler_result/finviz/stock-detail
+
+
+get stock detail multi-thread:
+	mode=all-stock-detail-multithread thread=5 stock-list=/Users/james/big-qc/crawler_result/finviz/stock-list/2017-12-06/result.txt date=2017-12-06 output=/Users/james/big-qc/crawler_result/finviz/stock-detail
+
+	java -Xms4096M -Xmx8192M -cp ./target/crawler-finviz-0.0.1-SNAPSHOT-jar-with-dependencies.jar com.james.runner.FinvizRunner mode=all-stock-detail-multithread thread=5 stock-list=/Users/james/big-qc/crawler_result/finviz/stock-list/2017-12-06/result.txt date=2017-12-06 output=/Users/james/big-qc/crawler_result/finviz/stock-detail
+
