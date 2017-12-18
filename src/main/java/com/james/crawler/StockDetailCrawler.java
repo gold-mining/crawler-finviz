@@ -55,6 +55,7 @@ public class StockDetailCrawler {
 			outpuResult(basicStatistic, ratingOuters, news, insiders);
 			this.writer.close();
 		} catch (Exception e) {
+			System.err.println(this.ticker);
 			e.printStackTrace();
 		}
 	}
@@ -213,7 +214,7 @@ public class StockDetailCrawler {
 		news = (news == null) ? new ArrayList<News>() : news;
 		insiders = (insiders == null) ? new ArrayList<Insider>() : insiders;
 		
-		outpuResultToConsole(basicStatistic, ratingOuters, news, insiders);
+//		outpuResultToConsole(basicStatistic, ratingOuters, news, insiders);
 		outpuResultToFiles(basicStatistic, ratingOuters, news, insiders);
 	}
 	
