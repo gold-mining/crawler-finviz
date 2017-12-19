@@ -48,7 +48,7 @@ public class StockListCrawler {
 		for (int i = 2; i <= 21; i++) {
 			Element row = Xsoup.compile("//*[@id=\"screener-content\"]/table/tbody/tr[4]/td/table/tbody/tr[" + i + "]").evaluate(document).getElements().get(0);
 			OverView overView = getOverview(row);
-			System.out.println(overView);
+			// System.out.println(overView);
 			writer.println(overView);
 		}
 	}
