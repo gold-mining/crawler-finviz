@@ -71,6 +71,7 @@ public class FinvizRunner {
 					}
 
 					private Runnable init(String stock, String folder, String output) {
+						System.err.print(stock + " ");
 						this.stock = stock;
 						this.folder = folder;
 						this.output = output;
