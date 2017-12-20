@@ -30,15 +30,13 @@ public class FinvizRunner {
 		}
 
 		FinvizRunner runner = new FinvizRunner();
-		runner.getStockList("1", "5", "/Users/james/tmp");
-		runner.getAllStockDetail("/Users/james/tmp/result.txt", "2017-12-21", "/Users/james/tmp", "10");
 		
-//		switch (input.get("mode")) {
-//			case "list-stock": runner.getStockList(input.get("start"), input.get("stop"), input.get("output")); break;
-//			case "all-stock-detail": runner.getAllStockDetail(input.get("stock-list"), input.get("date"), input.get("output")); break;
-//			case "all-stock-detail-multithread": runner.getAllStockDetailMultiThread(input.get("thread"), input.get("stock-list"), input.get("date"), input.get("output")); break;
-//			default: break;
-//		}
+		switch (input.get("mode")) {
+			case "list-stock": runner.getStockList(input.get("start"), input.get("stop"), input.get("output")); break;
+			case "all-stock-detail": runner.getAllStockDetail(input.get("stock-list"), input.get("date"), input.get("output")); break;
+			case "all-stock-detail-multithread": runner.getAllStockDetail(input.get("thread"), input.get("stock-list"), input.get("date"), input.get("output")); break;
+			default: break;
+		}
 
 		Date date2 = new Date();
 		System.out.println(date2.getTime() - date1.getTime());
