@@ -55,8 +55,8 @@ public class StockDetailCrawler {
 			outpuResult(basicStatistic, ratingOuters, news, insiders);
 			this.writer.close();
 		} catch (Exception e) {
-			System.err.println(this.ticker);
-			e.printStackTrace();
+			System.out.println(this.ticker);
+			System.out.println(e.toString());
 		}
 	}
 
