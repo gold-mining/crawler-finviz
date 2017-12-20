@@ -10,8 +10,9 @@ public class FileDAO {
 	
 	public static void output(StockDetailData data, String finalPath) {
 		try {
+			FileUtil.createDirectory(finalPath);
 			PrintWriter writer = new PrintWriter(finalPath + "/" + data.ticker + ".txt", "UTF-8");
-			System.out.println(data);
+			writer.println(data);
 			writer.close();
 		} catch (Exception e) {
 			System.out.println("Output data for " + data.ticker + " fail");
@@ -22,6 +23,7 @@ public class FileDAO {
 	
 	public static void output(List<OverView> overViews, String finalPath) {
 		try {
+			FileUtil.createDirectory(finalPath);
 			PrintWriter writer = new PrintWriter(finalPath + "/result.txt", "UTF-8");
 			for(int i = 0; i < overViews.size(); i++) {
 				writer.println(overViews.get(i));
