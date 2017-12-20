@@ -11,4 +11,8 @@ public class RatingOuter {
 	public String toString() {
 		return date + "\t" + rating + "\t" + institution + "\t" + action + "\t" + targetPrice + "\t";
 	}
+	
+	public static String markers() {
+		return "date" + "\t" + "rating" + "\t" + "institution" + "\t" + "action" + "\t" + "targetPrice";
+	}
 }

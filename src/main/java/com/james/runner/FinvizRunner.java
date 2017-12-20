@@ -1,5 +1,6 @@
 package com.james.runner;
 
+import java.awt.List;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
@@ -15,6 +16,8 @@ import java.util.concurrent.TimeUnit;
 
 import com.james.crawler.StockDetailCrawler;
 import com.james.crawler.StockListCrawler;
+import com.james.dao.FileUtil;
+import com.james.modal.OverView;
 
 public class FinvizRunner {
 	
@@ -43,6 +46,10 @@ public class FinvizRunner {
 	}
 	
 	public void getStockList(String start, String stop, String output) throws Exception {
+		if (FileUtil.isFileExist(output + "/result.txt")) return;
+		StockListCrawler crawler = new StockListCrawler();
+		LinkedList<OverView> overViews = crawler.getStockList(start, stop);
+		
 		StockListCrawler crawler = new StockListCrawler(Integer.parseInt(start), Integer.parseInt(stop), output);
 		crawler.getStockList();
 	}

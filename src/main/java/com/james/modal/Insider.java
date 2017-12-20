@@ -15,4 +15,8 @@ public class Insider {
 	public String toString() {
 		return name + "\t" + relationShip + "\t" + date + "\t" + transaction + "\t" + cost + "\t" + shares + "\t" + value + "\t" + sharesTotal + "\t" + total;
 	}
+	
+	public static String markers() {
+		return "name" + "\t" + "relationShip" + "\t" + "date" + "\t" + "transaction" + "\t" + "cost" + "\t" + "shares" + "\t" + "value" + "\t" + "sharesTotal" + "\t" + "total";
+	}
 }
