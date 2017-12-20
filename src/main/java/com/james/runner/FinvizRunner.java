@@ -38,6 +38,7 @@ public class FinvizRunner {
 		}
 
 		Date date2 = new Date();
+		System.out.println();
 		System.out.println(date2.getTime() - date1.getTime());
 	}
 	
@@ -57,7 +58,8 @@ public class FinvizRunner {
 	public void getAllStockDetailMultiThread(String threadNumber, String stockList, String date, String output) {
 		try {
 			Queue<String> queue = getStockListFromFile(stockList);
-
+			Queue<String> finished = new LinkedList<String>();
+			
 			ExecutorService executor = Executors.newFixedThreadPool(Integer.parseInt(threadNumber));
 
 			while (!queue.isEmpty()) {
@@ -65,19 +67,22 @@ public class FinvizRunner {
 					String stock;
 					String folder;
 					String output;
+					Queue<String> finished;
 					public void run() {
 						StockDetailCrawler crawler = new StockDetailCrawler();
 						if(crawler.initCrawler(stock, folder, output)) crawler.getDetailInfo();
+						finished.offer(stock);
+						System.err.print(finished.size() + " ");
 					}
 
-					private Runnable init(String stock, String folder, String output) {
-						System.err.print(stock + " ");
+					private Runnable init(String stock, String folder, String output, Queue<String> finished) {
 						this.stock = stock;
 						this.folder = folder;
 						this.output = output;
+						this.finished = finished;
 						return this;
 					}
-				}.init(queue.poll(), date, output));
+				}.init(queue.poll(), date, output, finished));
 			}
 
 			executor.shutdown();
