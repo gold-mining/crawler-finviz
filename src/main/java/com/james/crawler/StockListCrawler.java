@@ -1,7 +1,7 @@
 package com.james.crawler;
 
-import java.io.File;
-import java.io.PrintWriter;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -12,45 +12,32 @@ import com.james.modal.OverView;
 import us.codecraft.xsoup.Xsoup;
 
 public class StockListCrawler {
-	
-	private int startPage = 1;
-
-	private int endPage = 200;
-	
-	private String output = ""; 
-	
-	private PrintWriter writer;
-	
-	public StockListCrawler() {
-		super();
-	}
-	
-	public StockListCrawler(int startPage, int endPage, String output) {
-		super();
-		this.startPage = startPage;
-		this.endPage = endPage;
-		this.output = output;
-	}
-	
-	public void getStockList() throws Exception {
-		new File(output).mkdirs();
-		writer = new PrintWriter(output + "/result.txt", "UTF-8");
-		for (int i = startPage; i <= endPage; i++) {
-			String url = "https://finviz.com/screener.ashx?v=111&o=-marketcap&r=" + ((i - 1) * 20 + 1);
-			getStockInOnePage(url, i);
+		
+	public List<OverView> getStockList(int startPage, int endPage) throws Exception {
+		try {
+			List<OverView> overViews = new ArrayList<OverView>();
+			for (int i = startPage; i <= endPage; i++) {
+				overViews.addAll(getStockInOnePage(i));
+			}
+			return overViews;
+		} catch (Exception e) {
+			System.out.println("Get stock list fails");
+			System.out.println(e.toString());
+			return null;
 		}
-		writer.close();
+		
 	}
 	
-	public void getStockInOnePage(String pageURL, int pageNumber) throws Exception {
-		Document document = Jsoup.connect(pageURL).get();
+	public List<OverView> getStockInOnePage(int pageNumber) throws Exception {
+		List<OverView> overViews = new ArrayList<OverView>();
+		Document document = Jsoup.connect("https://finviz.com/screener.ashx?v=111&o=-marketcap&r=" + ((pageNumber - 1) * 20 + 1)).get();
 		
 		for (int i = 2; i <= 21; i++) {
 			Element row = Xsoup.compile("//*[@id=\"screener-content\"]/table/tbody/tr[4]/td/table/tbody/tr[" + i + "]").evaluate(document).getElements().get(0);
 			OverView overView = getOverview(row);
-			// System.out.println(overView);
-			writer.println(overView);
+			overViews.add(overView);
 		}
+		return overViews;
 	}
 	
 	private OverView getOverview(Element row) {

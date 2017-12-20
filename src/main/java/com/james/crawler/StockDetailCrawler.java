@@ -1,7 +1,5 @@
 package com.james.crawler;
 
-import java.io.File;
-import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -14,49 +12,28 @@ import com.james.modal.BasicStatistic;
 import com.james.modal.Insider;
 import com.james.modal.News;
 import com.james.modal.RatingOuter;
+import com.james.modal.StockDetailData;
 
 import us.codecraft.xsoup.Xsoup;
 
 public class StockDetailCrawler {
-
-	private String ticker = "";
-
-	private String finalOutPath = "";
-
-	private PrintWriter writer;
-
-	public StockDetailCrawler() {
-		super();
-	}
-
-	public boolean initCrawler(String ticker, String date, String output) {
-		this.ticker = ticker;
-		this.finalOutPath = output + "/" + date;
-		if (isFileExist()) return false;
-
-		try {
-			new File(finalOutPath).mkdirs();
-			return true;
-		} catch (Exception e) {
-			e.printStackTrace();
-			return false;
-		}
-	}
 	
-	public void getDetailInfo() {
+	public StockDetailData getDetailInfo(String ticker) {
 		try {
-			Document document = Jsoup.connect("https://finviz.com/quote.ashx?t=" + this.ticker + "&ty=c&p=d&b=1").get();
-			this.writer = new PrintWriter(finalOutPath + "/" + this.ticker + ".txt", "UTF-8");
+			StockDetailData data = new StockDetailData();
+			Document document = Jsoup.connect("https://finviz.com/quote.ashx?t=" + ticker + "&ty=c&p=d&b=1").get();
 			
-			BasicStatistic basicStatistic = getBasicStatistic(document);
-			List<RatingOuter> ratingOuters = getRatingOuter(document);
-			List<News> news = getNews(document);
-			List<Insider> insiders = getInsider(document);
-			outpuResult(basicStatistic, ratingOuters, news, insiders);
-			this.writer.close();
+			data.ticker = ticker;
+			data.basicStatistic = getBasicStatistic(document);
+			data.ratingOuters = getRatingOuter(document);
+			data.news = getNews(document);
+			data.insiders = getInsider(document);
+			
+			return data;
 		} catch (Exception e) {
-			System.out.println(this.ticker);
+			System.out.println(ticker);
 			System.out.println(e.toString());
+			return null;
 		}
 	}
 
@@ -208,54 +185,4 @@ public class StockDetailCrawler {
 
 		return insiders;
 	}
-	
-	private void outpuResult(BasicStatistic basicStatistic, List<RatingOuter> ratingOuters, List<News> news, List<Insider> insiders) {
-		ratingOuters = (ratingOuters == null) ? new ArrayList<RatingOuter>() : ratingOuters;
-		news = (news == null) ? new ArrayList<News>() : news;
-		insiders = (insiders == null) ? new ArrayList<Insider>() : insiders;
-		
-//		outpuResultToConsole(basicStatistic, ratingOuters, news, insiders);
-		outpuResultToFiles(basicStatistic, ratingOuters, news, insiders);
-	}
-	
-	private void outpuResultToFiles(BasicStatistic basicStatistic, List<RatingOuter> ratingOuters, List<News> news, List<Insider> insiders) {
-		writer.println(this.ticker);
-		writer.println("\t basic statistic");
-		writer.println("\t\t" + BasicStatistic.markers());
-		writer.println("\t\t" + basicStatistic);
-		
-		writer.println("\t rating");
-		for(RatingOuter ratingOuter: ratingOuters) writer.println("\t\t" + ratingOuter);
-		
-		writer.println("\t news");
-		for(News singleNews: news) writer.println("\t\t" + singleNews);
-		
-		writer.println("\t inside trading");
-		for(Insider insider: insiders) writer.println("\t\t" + insider);
-	}
-	
-	private void outpuResultToConsole(BasicStatistic basicStatistic, List<RatingOuter> ratingOuters, List<News> news, List<Insider> insiders) {
-		System.out.println(this.ticker);
-		System.out.println("\t basic statistic");
-		System.out.println("\t\t" + BasicStatistic.markers());
-		System.out.println("\t\t" + basicStatistic);
-		
-		System.out.println("\t rating");
-		for(RatingOuter ratingOuter: ratingOuters) System.out.println("\t\t" + ratingOuter);
-		
-		System.out.println("\t news");
-		for(News singleNews: news) System.out.println("\t\t" + singleNews);
-		
-		System.out.println("\t inside trading");
-		for(Insider insider: insiders) System.out.println("\t\t" + insider);
-		
-		System.out.println();
-		System.out.println();
-	}
-
-	private boolean isFileExist() {
-		File file = new File(finalOutPath + "/" + this.ticker + ".txt");
-		return file.exists() && file.length() != 0;
-	}
-
 }
