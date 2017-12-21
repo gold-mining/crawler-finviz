@@ -17,7 +17,7 @@ import com.james.dao.FileUtil;
 import com.james.modal.OverView;
 import com.james.modal.StockDetailData;
 
-public class FinvizRunner {
+public class Runner {
 	
 	public static void main(String[] args) throws Exception {	
 		Date date1 = new Date();
@@ -29,12 +29,12 @@ public class FinvizRunner {
 			System.out.println(parts[0] + ": " + parts[1]);
 		}
 
-		FinvizRunner runner = new FinvizRunner();
+		Runner runner = new Runner();
 		
 		switch (input.get("mode")) {
 			case "list-stock": runner.getStockList(input.get("start"), input.get("stop"), input.get("output")); break;
 			case "all-stock-detail": runner.getAllStockDetail(input.get("stock-list"), input.get("date"), input.get("output")); break;
-			case "all-stock-detail-multithread": runner.getAllStockDetail(input.get("thread"), input.get("stock-list"), input.get("date"), input.get("output")); break;
+			case "all-stock-detail-multithread": runner.getAllStockDetail(input.get("stock-list"), input.get("date"), input.get("output"), input.get("thread")); break;
 			default: break;
 		}
 
