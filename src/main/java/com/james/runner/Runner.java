@@ -33,8 +33,8 @@ public class Runner {
 		
 		switch (input.get("mode")) {
 			case "list-stock": runner.getStockList(input.get("start"), input.get("stop"), input.get("output")); break;
-			case "all-stock-detail": runner.getAllStockDetail(input.get("stock-list"), input.get("date"), input.get("output")); break;
-			case "all-stock-detail-multithread": runner.getAllStockDetail(input.get("stock-list"), input.get("date"), input.get("output"), input.get("thread")); break;
+			case "all-stock-detail": runner.getAllStockDetail(input.get("stock-list"), input.get("output")); break;
+			case "all-stock-detail-multithread": runner.getAllStockDetail(input.get("stock-list"), input.get("output"), input.get("thread")); break;
 			default: break;
 		}
 
@@ -50,23 +50,23 @@ public class Runner {
 		FileDAO.output(overViews, output);
 	}
 
-	public void getAllStockDetail(String stockList, String date, String output) {
+	public void getAllStockDetail(String stockList, String output) {
 		Queue<String> queue = FileUtil.getStockListFromFile(stockList);
 
 		while (!queue.isEmpty()) {
-			StockDetailRunner runner = new StockDetailRunner(queue.poll(), output + "/" + date);
+			StockDetailRunner runner = new StockDetailRunner(queue.poll(), output);
 			runner.run();
 		}
 	}
 
-	public void getAllStockDetail(String stockList, String date, String output, String threadNumber) {
+	public void getAllStockDetail(String stockList, String output, String threadNumber) {
 		try {
 			Queue<String> queue = FileUtil.getStockListFromFile(stockList);
 			
 			ExecutorService executor = Executors.newFixedThreadPool(Integer.parseInt(threadNumber));
 
 			while (!queue.isEmpty()) {
-				StockDetailRunner runner = new StockDetailRunner(queue.poll(), output + "/" + date);
+				StockDetailRunner runner = new StockDetailRunner(queue.poll(), output);
 				executor.execute(runner);
 			}
 
